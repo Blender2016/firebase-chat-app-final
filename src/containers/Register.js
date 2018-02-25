@@ -12,7 +12,7 @@ class Register extends Component{
     state = {
         confirmDirty: false,
         imgData:null,
-        time:3000
+        time:5000
       };
 
       componentWillReceiveProps(nextProps){
@@ -302,7 +302,8 @@ const mapStateToProps = state =>{
     console.log(state);
     return{
         loading:state.UserAuth.loading,
-        isAuth:state.UserAuth.isAuth
+        isAuth:state.UserAuth.isAuth,
+        time:state.UserAuth.time
     }
 };
 const mapDispatchToProps = dispatch =>{
