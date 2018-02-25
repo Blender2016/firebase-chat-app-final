@@ -14,3 +14,7 @@ export {
 export {
     onAuth
 } from "./Auth";
+
+export {
+    onProfileUpdate
+} from "./UpdateProfile";

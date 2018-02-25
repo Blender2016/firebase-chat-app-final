@@ -15,6 +15,11 @@ export const ON_LOGOUT_START = 'ON_LOGOUT_START';
 export const ON_LOGOUT_FAIL = 'ON_LOGOUT_FAIL';
 export const ON_LOGOUT_SUCCESS = 'ON_LOGOUT_SUCCESS';
 
+//Update user profile
+export const ON_UPDATE_START = 'ON_UPDATE_START';
+export const ON_UPDATE_FAIL = 'ON_UPDATE_FAIL';
+export const ON_UPDATE_SUCCESS = 'ON_UPDATE_SUCCESS';
+
 //User Authentication action types
 export const ON_AUTH_START = "ON_AUTH_START";
 export const ON_AUTH_FAIL = "ON_AUTH_FAIL";

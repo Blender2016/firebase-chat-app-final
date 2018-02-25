@@ -1,18 +1,18 @@
 import React, {Component} from "react";
-import {Form,Spin, Input,Icon,Tooltip, Button} from "antd";
 import {connect} from "react-redux";
+// import axios from "axios";
 import * as actionCreators from "../store/actions/index";
+import { Form,Spin, Icon, Input, Button,Tooltip ,Avatar } from 'antd';
 import {withRouter, Link} from "react-router-dom";
 const FormItem = Form.Item;
 
 
 class Register extends Component{
 
-    
-
     state = {
         confirmDirty: false,
-        time:2000
+        imgData:null,
+        time:3000
       };
 
       componentWillReceiveProps(nextProps){
@@ -28,6 +28,7 @@ class Register extends Component{
         this.props.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
             console.log('Received values of form: ', values);
+            console.log('upload',values.upload);
             let first = values.firstName;
             let last = values.lastName;
             delete values['firstName'];
@@ -37,8 +38,24 @@ class Register extends Component{
                 first:first,
                 last:last
             }
-            console.log('values ==++>',values);
-            this.props.onRegister(values);
+
+
+    
+           values['isOnline']=true;
+
+           //*-------- image -----------*//
+            console.log('x',this.state.imgData);
+            var fd = new FormData();
+            fd.append('imgData',this.state.imgData);
+            fd.append('op','base64');
+            fd.append('first',values.name.first);
+            fd.append('last',values.name.last);
+            fd.append('username',values.username);
+            fd.append('email',values.email);
+            fd.append('password',values.password);
+            fd.append('isOnline',true);
+           //*--------------------------*//
+            this.props.onRegister(fd);
             setTimeout(()=>{
             if(this.props.isAuth){
                 this.props.history.push('/chat');
@@ -60,7 +77,7 @@ class Register extends Component{
     //         }
     // }
 
-    
+  
 
 
       handleConfirmBlur = (e) => {
@@ -84,6 +101,58 @@ class Register extends Component{
         }
         callback();
       }
+      
+      fileClickedHandler=(e)=>{
+          console.log(e.target.files[0]);
+        //   this.setState({
+        //       image:e.target.files[0]
+        //   });
+          //-------------
+          var image = e.target.files[0];
+          var reader  = new FileReader();
+          
+              reader.addEventListener("load", ()=> {
+                this.setState({
+                imgData:reader.result
+                });
+                console.log('image:' , this.state.imgData);
+              }, false);
+            
+              if (image) {
+                reader.readAsDataURL(image)
+              }
+        
+      }
+
+    //    encodeImageFileAsURL=()=> {
+    //           var reader  = new FileReader();
+    //           reader.addEventListener("load", function () {
+    //             console.log( 'result',reader.result);
+    //           }, false);
+            
+    //           if (this.state.image) {
+    //             console.log('dataurl',reader.readAsDataURL(this.state.image));
+    //           }
+    //   }
+
+    //   uploadClickedHandler=()=>{
+    //       console.log('x',this.state.imgData);
+    //       var fd = new FormData();
+    //       fd.append('imgData',this.state.imgData);
+    //       fd.append('op','base64');
+    //       for (var pair of fd.entries()) {
+    //         console.log(pair[0],' ->', pair[1]); 
+    //     }
+    //     //   console.log('formdata:', fd.get()); 
+    //       console.log('image:', this.state.image);
+    //       axios.post('http://localhost:3000/api/fileupload/create',fd).then(res=>{
+    //           console.log(res);
+    //       });
+    //   }
+
+   
+
+    
 
     //   onPageReloaded=()=>{
     //       console.log('page reloaded');
@@ -120,8 +189,15 @@ class Register extends Component{
 
         return(
             <Spin spinning={this.props.loading}>
- 
-            <Form onSubmit={this.submitClickedHandler} >
+                {/* <Button onClick={this.encodeImageFileAsURL}>Upload</Button> */}
+                <div style={{  marginLeft: '300px',marginBottom:'50px' }}>
+                    <Avatar  src = {this.state.imgData} style={{ verticalAlign: 'middle'  }} alt=''/>
+                    <input type='file' style={{ marginLeft: 16, verticalAlign: 'middle' }} onChange={this.fileClickedHandler}/>
+                    {/* <Button size="small" style={{ marginLeft: 16, verticalAlign: 'middle' }} onClick={this.uploadClickedHandler}>
+                    Upload
+                    </Button> */}
+                     </div>
+                <Form onSubmit={this.submitClickedHandler} >
                 <FormItem
                     {...formItemLayout}
                     label='First Name'

@@ -16,8 +16,8 @@ class ChatHeader extends Component{
                 style={{ lineHeight: '64px' }}
                 >
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-                    <Menu.Item key="3"><Link to="/register" >Register</Link></Menu.Item>
-                    <Menu.Item key="4"><Link to="/login" >Login</Link></Menu.Item>
+                    <Menu.Item key="2"><Link to="/register" >Register</Link></Menu.Item>
+                    <Menu.Item key="3"><Link to="/login" >Login</Link></Menu.Item>
             </Menu>
         );
         if(this.props.isAuth){
@@ -30,7 +30,9 @@ class ChatHeader extends Component{
                 >
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
                     <Menu.Item key="2"><Link to="/chat">Chat</Link></Menu.Item>
-                    <Menu.Item key="5"><Link to="/logout" >logout</Link></Menu.Item>
+                    <Menu.Item key="3"><Link to="/profile" >User Profile</Link></Menu.Item>
+                    <Menu.Item key="4"><Link to="/logout" >logout</Link></Menu.Item>
+                    
                 </Menu>
             );    
         }else{
@@ -42,8 +44,8 @@ class ChatHeader extends Component{
                 style={{ lineHeight: '64px' }}
                 >
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-                    <Menu.Item key="3"><Link to="/register" >Register</Link></Menu.Item>
-                    <Menu.Item key="4"><Link to="/login" >Login</Link></Menu.Item>
+                    <Menu.Item key="2"><Link to="/register" >Register</Link></Menu.Item>
+                    <Menu.Item key="3"><Link to="/login" >Login</Link></Menu.Item>
                 </Menu>
             )
         }

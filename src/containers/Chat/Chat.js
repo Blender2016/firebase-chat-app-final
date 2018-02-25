@@ -1,20 +1,22 @@
 import React, {Component} from "react";
 import { Layout, Button, notification } from 'antd';
-import Message from "../components/Message/Message";
-import UserList from "../components/UserList";
-import MessageBox from "../components/MessageBox";
+// import Message from "../../components/Message/Message";
+import UserList from "../../components/UserList/UserList";
+import MessageBox from "../../components/MessageBox";
 // import topbar from "topbar";
-import axios from "../axios_base";
+import axios from "../../axios_base";
+// import styles from "./Chat.module.css";
+import MessageList from "../../components/MessageList/MessageList";
 import {connect} from "react-redux";
-import firebaseApp from "../js/firebase";
-import uuidv4 from "uuid/v4";
+import firebaseApp from "../../js/firebase";
+// import uuidv4 from "uuid/v4";
 import {withRouter} from "react-router-dom";
-import * as actionCreators from "../store/actions/index";
+import * as actionCreators from "../../store/actions/index";
 import _ from "lodash";
 // import {getUserData} from "../js/localStorage";
-import messageModel from "../js/models/message";
-import userModel from "../js/models/user";
-import notificationModel from "../js/models/notification";
+import messageModel from "../../js/models/message";
+import userModel from "../../js/models/user";
+import notificationModel from "../../js/models/notification";
 
 
 var database= firebaseApp.database();
@@ -285,7 +287,7 @@ getAllData(values){
             }
             
             //update owner user by adding users he talking with them
-            let ownerUser = userModel(ownerId,ownerName,ownerMail,token,chatWith);
+            let ownerUser = userModel(ownerId,this.props.userImage,ownerName,ownerMail,token,this.props.isOnline,this.props.loggedOutAt,chatWith);
             database.ref('/users/' + ownerId).set(ownerUser).then(()=>{
                 console.log('owner user updated successfully');
             }).catch((err)=>{
@@ -310,7 +312,13 @@ getAllData(values){
             }else{
                 otherChatWith=[userNeedToChat];
             }
-            let otherUser = userModel(user.id,user.name,user.email,user.token,otherChatWith);
+            let offline;
+            if(user.loggedOutAt){
+                offline=user.loggedOutAt;
+            }else{
+                offline=null;
+            }
+            let otherUser = userModel(user.id,user.imageUrl,user.name,user.email,user.token,user.isOnline,offline,otherChatWith);
             database.ref('/users/' + user.id).set(otherUser).then(()=>{
                 console.log('owner user updated successfully');
             }).catch((err)=>{
@@ -390,19 +398,16 @@ sendClickedHandler = ()=>{
 
    
     render(){
-        let messageNodes = this.state.messages.map((message) => {
-            return (
-                <Message key={uuidv4()} message={message.message} sender={message.senderId} owner={this.props.ownerId}/>
-            )
-          });
-    
-          
+
+        window.onclose=()=>{
+            alert('closed');
+        }
         return(
             <Layout style={{ padding: '15px 0', background: '#fff' }}>
             <UserList users={this.state.users} ownerId={this.props.ownerId} userClicked={(user)=>this.userClickedHandler(user)}/>
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            <Content style={{ padding: '0 24px', minHeight: 280 }} >
              <Content style={{padding: '24px 24px 24px 24px', margin: '0px 0px 10px 0px', minHeight: 285 ,background:'#fff1f0'}}>
-                {messageNodes}
+                <MessageList messages = {this.state.messages} owner ={this.props.ownerId}/>
              </Content>
              <Footer>
                  <MessageBox db={database} chatId={this.state.chatId} sendClicked={this.sendClickedHandler}/>
@@ -417,9 +422,12 @@ const mapStateToProps = state =>{
     console.log(state);
     return{
         ownerId:state.UserAuth.ownerId,
+        userImage:state.UserAuth.userImage,
         ownerName:state.UserAuth.ownerName,
         email:state.UserAuth.email,
         token:state.UserAuth.token,
+        isOnline:state.UserAuth.isOnline,
+        loggedOutAt:state.UserAuth.loggedOutAt
     };
 };
 const mapDispatchToProps=dispatch=>{

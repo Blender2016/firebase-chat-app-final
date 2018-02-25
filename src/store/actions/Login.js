@@ -8,13 +8,16 @@ const onLoginStart=()=>{
         type:actionTyps.ON_LOGIN_START
     };
 };
-const onLoginSuccess=(id,userName,email,token)=>{
+const onLoginSuccess=(id,imageUrl,userName,email,token,isOnline,loggedOutAt)=>{
     return{
         type:actionTyps.ON_LOGIN_SUCCESS,
         userId:id,
+        imageUrl:imageUrl,
         userName:userName,
         userMail:email,
-        authToken:token
+        authToken:token,
+        isOnline:isOnline,
+        loggedOutAt:loggedOutAt
     };
 };
 const onLoginFail=()=>{
@@ -36,18 +39,21 @@ export const onLogin=(userCredentials)=>{
             console.log('status :',res.status); 
             // var token = res.headers['x-auth']; ///fetch x-auth from the header .
             var id = res.data._id;
+            var imageUrl=res.data.userImage.url;
             var email = res.data.email;
             var userName = res.data.username;
+            var isOnline=res.data.isOnline;
+            var loggedOutAt=res.data.loggedOutAt;
             var token = res.data.tokens[0].token;
             let database = firebaseApp.database();
-            let user = userModel(id,userName,email,token,[]);
+            let user = userModel(id,imageUrl,userName,email,token,isOnline,loggedOutAt,[]);
 
             database.ref('/users/'+id).set(user).then(()=>{
                 console.log('user added to firebase successfully');
             }).catch((err)=>{
                 console.log('failed to add user to firebase',err);
             });
-            dispatch(onLoginSuccess(id,userName,email,token));
+            dispatch(onLoginSuccess(id,imageUrl,userName,email,token,isOnline,loggedOutAt));
         }).catch(err=>{
             dispatch(onLoginFail());
         });

@@ -8,7 +8,7 @@ class Logout extends Component{
 
     componentWillMount(){
         console.log('token',this.props.token);
-         this.props.onLogout(this.props.token);
+         this.props.onLogout(this.props.token,this.props.ownerId);
          localStorage.clear();
          console.log('local storage cleared done');
          this.props.history.push('/login');
@@ -25,13 +25,14 @@ class Logout extends Component{
 
 const mapStateToProps=state=>{
     return{
-        token:state.UserAuth.token
+        token:state.UserAuth.token,
+        ownerId:state.UserAuth.ownerId
     }
 }
 
 const mapDispatchToProps=dispatch=>{
     return{
-        onLogout:(token)=>dispatch(actionCreators.onLogout(token))
+        onLogout:(token,id)=>dispatch(actionCreators.onLogout(token,id))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Logout));

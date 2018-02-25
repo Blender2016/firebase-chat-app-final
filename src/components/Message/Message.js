@@ -5,9 +5,9 @@ import Styles from "./Message.module.css";
 const Message =(props)=>{
     var bubble;
     if(props.sender === props.owner){
-     bubble=[Styles.bubble,Styles.me];
+     bubble=[Styles.meBubble,Styles.me];
     }else{
-        bubble=[Styles.bubble,Styles.you];
+        bubble=[Styles.youBubble,Styles.you];
     }
      
     // const bubbleMe=[Styles.bubble,Styles.me];

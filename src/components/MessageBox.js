@@ -45,7 +45,7 @@ class MessageBox  extends Component{
                 <FormItem >
                 <Input 
                 placeholder="Enter your message" 
-                style={{width:'800px'}} 
+                style={{width:'760px'}} 
                 size="large"
                 value={this.state.message}
                 onChange={this.inputChangeHandler}

@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 class Login extends Component {
   state={
     visible:false,
-    time:2000
+    time:1500
   };
 
   componentWillReceiveProps(nextProps){
@@ -35,6 +35,8 @@ class Login extends Component {
       if (!err) {
         console.log('Received values of form: ', values);
         delete values['remember'];
+        values['isOnline']=true;
+        console.log('values ----->',values);
         this.props.onLogin(values);
         
         setTimeout(()=>{

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
-import Chat from "../src/containers/Chat";
+import Chat from "../src/containers/Chat/Chat";
 import {Route} from "react-router-dom";
 import Login from "../src/containers/Login/Login";
 import Home from "../src/components/Home";
+import UserProfile from "./components/UserProfile/UserProfile";
 import ResetPassword from "./containers/ResetPassword";
 import Logout from "./containers/Logout";
 import Register from "../src/containers/Register";
@@ -15,6 +16,9 @@ const {  Content, Footer } = Layout;
 
 class App extends Component {
   render() {
+
+   
+
     return (
       <div>
         <Layout>
@@ -22,6 +26,7 @@ class App extends Component {
            <Content style={{ padding: '50px 50px 20px 50px' }}>
                   <Route exact path='/' component={Home}/>
                   <Route  path='/login' component={Login}/>
+                  <Route path="/profile" component={UserProfile}/>
                   <Route  path='/chat' component={Chat}/>
                   <Route path='/register' component={Register}/>
                   <Route path="/resetpassword" component={ResetPassword}/>
