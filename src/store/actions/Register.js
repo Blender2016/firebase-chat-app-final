@@ -57,13 +57,15 @@ export const onRegister=(userData)=>{
                 var token = res.data.tokens[0].token;
                 console.log('loggedOutAt',loggedOutAt);
                 let database = firebaseApp.database();
-                let user = userModel(id,imageUrl,userName,email,token,isOnline,loggedOutAt,[]);
+                let user = userModel(id,imageUrl,userName,email,token,isOnline,false,loggedOutAt);
                 database.ref('/users/'+id).set(user).then(()=>{
+                    dispatch(isRegistered());
+                    dispatch(onRegisterSuccess(id,imageUrl,userName,email,token,isOnline,loggedOutAt));
                     console.log('user added to firebase successfully');
                 }).catch((err)=>{
                     console.log('failed to add user to firebase',err);
                 });
-                dispatch(onRegisterSuccess(id,imageUrl,userName,email,token,isOnline,loggedOutAt));
+                
              }      
        }).catch(err=>{
         dispatch(onRegisterFail(err));

@@ -1,6 +1,6 @@
 import * as actionTyps from "./actionTypes";
 import axios from "../../axios_base";
-import userModel from "../../js/models/user";
+// import userModel from "../../js/models/user";
 import firebaseApp from "../../js/firebase";
 
 const onLoginStart=()=>{
@@ -42,17 +42,26 @@ export const onLogin=(userCredentials)=>{
             var imageUrl=res.data.userImage.url;
             var email = res.data.email;
             var userName = res.data.username;
-            var isOnline=res.data.isOnline;
+            var isOnline=true;
             var loggedOutAt=res.data.loggedOutAt;
             var token = res.data.tokens[0].token;
             let database = firebaseApp.database();
-            let user = userModel(id,imageUrl,userName,email,token,isOnline,loggedOutAt,[]);
+            console.log('imageUrl:>>',imageUrl);
+            // let user = userModel(id,imageUrl,userName,email,token,isOnline,false,loggedOutAt,[]);
 
-            database.ref('/users/'+id).set(user).then(()=>{
-                console.log('user added to firebase successfully');
-            }).catch((err)=>{
-                console.log('failed to add user to firebase',err);
+            // database.ref('/users/'+id).set(user).then(()=>{
+            //     console.log('user added to firebase successfully');
+            // }).catch((err)=>{
+            //     console.log('failed to add user to firebase',err);
+            // });
+
+            // update user data in firebase
+            database.ref('/users/'+id).update({
+                token:token,
+                isOnline:true,
+                loggedOutAt:null
             });
+
             dispatch(onLoginSuccess(id,imageUrl,userName,email,token,isOnline,loggedOutAt));
         }).catch(err=>{
             dispatch(onLoginFail());

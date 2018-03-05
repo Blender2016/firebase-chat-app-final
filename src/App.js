@@ -9,22 +9,37 @@ import ResetPassword from "./containers/ResetPassword";
 import Logout from "./containers/Logout";
 import Register from "../src/containers/Register";
 import ChatHeader from "../src/components/ChatHeader/ChatHeader";
+// import firebaseApp from "./js/firebase";
+
 
 
 const {  Content, Footer } = Layout;
 
 
 class App extends Component {
-  render() {
 
-   
+  
+
+  render() {
+    
+  //    // make user offline after browser or tab closed
+  //    console.log('ownerid from index :',this.props.ownerId);
+  //   if(this.props.ownerId){
+      
+  //   }
+
+  // // window.onbeforeunload = function(e) {
+  // //   var dialogText = 'Dialog text here';
+  // //   e.returnValue = dialogText;
+  // //   return dialogText;
+  // // };
 
     return (
       <div>
         <Layout>
         <ChatHeader>Header</ChatHeader>
            <Content style={{ padding: '50px 50px 20px 50px' }}>
-                  <Route exact path='/' component={Home}/>
+           <Route exact path='/' component={Home}/>
                   <Route  path='/login' component={Login}/>
                   <Route path="/profile" component={UserProfile}/>
                   <Route  path='/chat' component={Chat}/>
@@ -41,5 +56,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;

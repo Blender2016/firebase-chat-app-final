@@ -10,7 +10,7 @@ const initialState={
     email:null,
     isOnline:false,
     loggedOutAt:null,
-    time:2000,
+    time:5000,
     isAuth:false,
     loading:false
 };
@@ -34,7 +34,7 @@ const onRegisterSuccess =(state,action)=>{
         loggedOutAt:action.loggedOutAt,
         isAuth:true,
         loading:false,
-        time:0
+        time:1000
     });
 };
 
@@ -69,7 +69,7 @@ const onLoginSuccess =(state,action)=>{
         loggedOutAt:action.loggedOutAt,
         isAuth:true,
         loading:false,
-        time:0
+        time:1000
     });
 };
 

@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios_base";
 import firebaseApp from "../../js/firebase";
-import moment from "moment";
 
 
 const onLogoutStart=()=>{
@@ -20,6 +19,7 @@ const onLogoutSuccess=()=>{
     }
 };
 
+
 export const onLogout=(authToken,id)=>{
     console.log('blender :',authToken);
     return dispatch=>{
@@ -27,11 +27,15 @@ export const onLogout=(authToken,id)=>{
         dispatch(onLogoutStart());
         axios.delete('/logout',{ headers: { 'X-auth':authToken } }).then(res=>{
             console.log('user logout successfully');
-            //update is online from firebase
-            firebaseApp.database().ref('/users/'+id).update({
-                isOnline:false,
-                loggedOutAt:moment().format()
-            });
+            firebaseApp.database().ref('/users').child(id).once('value', (snapshot)=> {
+                if(snapshot.val() !== null){
+                    //update is online from firebase
+                    firebaseApp.database().ref('/users/'+id).update({
+                        isOnline:false,
+                        loggedOutAt:Date.now()
+                    });
+                }
+              });            
             dispatch(onLogoutSuccess());
         }).catch(err=>{
             console.log('userlogout failed');

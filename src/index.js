@@ -18,8 +18,15 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';         // defaults to localStorage for web
 import { PersistGate } from 'redux-persist/integration/react';
 
+// import { ConnectedRouter as Router, routerReducer, routerMiddleware } from "react-router-redux";
+// import createHistory from 'history/createBrowserHistory';
+// const history = createHistory();
+// const middleware = routerMiddleware(history);
+
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 
 const persistConfig = {
   key: 'root',
@@ -29,12 +36,10 @@ const persistConfig = {
 
 const appReducer = combineReducers({
     /* your app’s top-level reducers */
-    // Register:registerReducer,
-    // Login:loginReducer,
     UserAuth:userAuthReducer,
-    // Auth:authReducer,
-    Logout:logoutReducer
+    Logout:logoutReducer,
   })
+
 
   const persistedReducer = persistReducer(persistConfig, appReducer);
   
@@ -55,14 +60,20 @@ const appReducer = combineReducers({
     composeEnhancers(
         applyMiddleware(thunk)
     ));
+
+   
     
   let persistor = persistStore(store);
 
+ 
+
+var ownerId = store.getState().UserAuth.ownerId;
+
 const app=(
    <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
-                <BrowserRouter>
-                    <App/>
+        <PersistGate persistor={persistor} loading={null}  >
+                <BrowserRouter >
+                    <App ownerId={ownerId}/>
                 </BrowserRouter>
         </PersistGate>
    </Provider>
